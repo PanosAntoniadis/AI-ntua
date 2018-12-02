@@ -5,8 +5,8 @@
 - __client.csv:__ This file contains the coordinates of the location of each client in the following form:
 
 <p align="center">X, Y <br>
-  23.733912, 37.975687</p>
-where X is the longitude and Y is the latitude.
+  23.733912, 37.975687 <br>
+  where X is the longitude and Y is the latitude.</p>
 
 - __taxis.csv:__ This file contains the coordinates of the location and the ids of all taxis that are available in the following form:
 

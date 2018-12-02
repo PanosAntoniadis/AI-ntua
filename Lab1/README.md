@@ -4,10 +4,8 @@
 
 - __client.csv:__ This file contains the coordinates of the location of each client in the following form:
 
-  <center> X, Y</center>
-
-  <center> 23.733912, 37.975687</center>
-
+<p align="center">X, Y <br>
+  23.733912, 37.975687</p>
 
 
 

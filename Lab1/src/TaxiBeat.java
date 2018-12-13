@@ -67,6 +67,20 @@ public class TaxiBeat {
             e.printStackTrace();
         }
         
+        /**
+         * Read client.csv file and create 
+         */
+        try (BufferedReader br = new BufferedReader(new FileReader(taxisFile))) {
+        	headerLine = br.readLine();
+            line = br.readLine();
+            /**
+            * Use comma as separator
+            */
+            fields = line.split(cvsSplitBy);
+            Client client = new Client(Double.parseDouble(fields[0]), Double.parseDouble(fields[1]));
+       } catch (IOException e) {
+            e.printStackTrace();
+            }
         
 	}
 

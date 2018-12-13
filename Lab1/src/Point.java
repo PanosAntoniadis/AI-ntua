@@ -6,8 +6,8 @@ public class Point {
 	double y;
 	
 	/**
-	 * @param x
-	 * @param y
+	 * @param x longitude
+	 * @param y latitude
 	 */
 	public Point(double x, double y) {
 		this.x = x;
@@ -22,7 +22,7 @@ public class Point {
 	}
 
 	/**
-	 * @param x the x to set
+	 * @param x longitude to set
 	 */
 	public void setX(double x) {
 		this.x = x;
@@ -36,7 +36,7 @@ public class Point {
 	}
 
 	/**
-	 * @param y the y to set
+	 * @param y latitude to set
 	 */
 	public void setY(double y) {
 		this.y = y;

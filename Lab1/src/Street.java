@@ -1,10 +1,20 @@
 /**
- * A simple class representing a street using its unique id and its name if given.
+ * A class representing a street using its unique id and its name if given.
 */
 public class Street {
 	int streetId;
 	String streetName;
 	
+
+	/**
+	 * @param streetId
+	 * @param streetName
+	 */
+	public Street(int streetId, String streetName) {
+		this.streetId = streetId;
+		this.streetName = streetName;
+	}
+
 	/**
 	 * @return the streetId
 	 */

@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * A class representing a crossroad using its longitude x, latitude y and the streets that crosses.
 */
-public class Crossroad extends Point{
+public class CrossRoad extends Point{
 	ArrayList<Street> crossStreets;
 
 	/**
@@ -12,7 +12,7 @@ public class Crossroad extends Point{
 	 * @param y
 	 * @param crossStreets
 	 */
-	public Crossroad(int x, int y, ArrayList<Street> crossStreets) {
+	public CrossRoad(int x, int y, ArrayList<Street> crossStreets) {
 		super(x, y);
 		this.crossStreets = crossStreets;
 	}

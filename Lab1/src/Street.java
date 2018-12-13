@@ -14,6 +14,16 @@ public class Street {
 		this.streetId = streetId;
 		this.streetName = streetName;
 	}
+	
+	/**
+	 * In case there is not a name available for the 
+	 * street this constructor is called.
+	 * @param streetId
+	 */
+	public Street(int streetId) {
+		this.streetId = streetId;
+		this.streetName = "None";
+	}
 
 	/**
 	 * @return the streetId
@@ -23,7 +33,7 @@ public class Street {
 	}
 	
 	/**
-	 * @param streetId is the if of the street to set
+	 * @param streetId is the id of the street to set
 	 */
 	public void setStreetId(int streetId) {
 		this.streetId = streetId;
@@ -40,6 +50,11 @@ public class Street {
 	 */
 	public void setStreetName(String streetName) {
 		this.streetName = streetName;
+	}
+
+	@Override
+	public String toString() {
+		return "Street [streetId=" + streetId + ", streetName=" + streetName + "]";
 	}
 
 }

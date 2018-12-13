@@ -1,11 +1,21 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * A class representing a street using its unique id and its name if given.
 */
 public class Street {
 	int streetId;
 	String streetName;
+	/**
+	 * Define a HashMap that contains for each street (key) the nodes it contains (values).
+	 */
+	static HashMap<Street, ArrayList<Node>> streetNodes = new HashMap<>();
+	/**
+	 * Define a HashMap that contains for the crossing points (key) the streets it crosses (values).
+	 */
+	static HashMap<Point, ArrayList<Street>> pointCrossings = new HashMap<>();
 	
-
 	/**
 	 * @param streetId
 	 * @param streetName

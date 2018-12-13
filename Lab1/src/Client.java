@@ -3,7 +3,7 @@
  * street that is closest to him.
 */
 public class Client extends Point {
-	Street closestStreet;
+	private Street closestStreet;
 
 	/**
 	 * @param x
@@ -30,7 +30,7 @@ public class Client extends Point {
 
 	@Override
 	public String toString() {
-		return "Client with streetId=" + closestStreet.streetId + " streetName " + closestStreet.streetName + " x= " + x + " y= " + y + "]";
+		return "Client with streetId=" + closestStreet.getStreetId() + " streetName " + closestStreet.getStreetName() + " x= " + getX() + " y= " + getY() + "]";
 	}
 	
 	

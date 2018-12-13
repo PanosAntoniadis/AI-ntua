@@ -2,8 +2,8 @@
  * A class representing a point in the map using its longitude x and its latitude y.
 */
 public class Point {
-	double x;
-	double y;
+	private double x;
+	private double y;
 	
 	/**
 	 * @param x longitude

@@ -3,8 +3,8 @@ import java.util.*;
  * A class representing a taxi in the map using its longitude x, its latitude y and its unique id.
 */
 public class Taxi extends Point{
-	int taxiId;
-	Street closestStreet;
+	private int taxiId;
+	private Street closestStreet;
 	static ArrayList<Taxi> taxis = new ArrayList<Taxi>();
 	
 	/**
@@ -34,8 +34,8 @@ public class Taxi extends Point{
 
 	@Override
 	public String toString() {
-		return "Taxi with taxiId=" + taxiId + " closest streetId = " + closestStreet.streetId + " streetName " +
-				closestStreet.streetName + "x= " + x + " y= " + y ;
+		return "Taxi with taxiId=" + taxiId + " closest streetId = " + closestStreet.getStreetId() + " streetName " +
+				closestStreet.getStreetName() + "x= " + getX() + " y= " + getY() ;
 	}
 	
 	

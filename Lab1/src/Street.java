@@ -5,8 +5,8 @@ import java.util.HashMap;
  * A class representing a street using its unique id and its name if given.
 */
 public class Street {
-	int streetId;
-	String streetName;
+	private int streetId;
+	private String streetName;
 	/**
 	 * Define a HashMap that contains for each street (key) the nodes it contains (values).
 	 */

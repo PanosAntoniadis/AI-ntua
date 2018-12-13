@@ -4,7 +4,7 @@ import java.util.*;
  * A class representing a node using its longitude x, latitude y and the street it belongs to.
 */
 public class Node extends Point {
-	Street street;
+	private Street street;
 	static ArrayList<Node> nodes = new ArrayList<Node>();
 	
 	/**
@@ -33,7 +33,7 @@ public class Node extends Point {
 
 	@Override
 	public String toString() {
-		return "Node with streetId=" + street.streetId + " streetName= " + street.streetName + ", x=" + x + ", y=" + y;
+		return "Node with streetId=" + street.getStreetId() + " streetName= " + street.getStreetName() + ", x=" + getX() + ", y=" + getY();
 	}
 	
 	

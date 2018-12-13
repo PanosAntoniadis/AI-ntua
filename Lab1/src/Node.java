@@ -1,31 +1,31 @@
 /**
- * A class representing a node using its longitude x, latitude y and the street id it belongs to.
+ * A class representing a node using its longitude x, latitude y and the street it belongs to.
 */
 public class Node extends Point {
-	int nodeId;
+	Street street;
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param nodeId
+	 * @param x longitude
+	 * @param y latitude
+	 * @param Street street
 	 */
-	public Node(int x, int y, int nodeId) {
+	public Node(int x, int y, Street street) {
 		super(x, y);
-		this.nodeId = nodeId;
+		this.street = street;
 	}
 
 	/**
-	 * @return the nodeId
+	 * @return the Street
 	 */
-	public int getNodeId() {
-		return nodeId;
+	public Street getStreet() {
+		return street;
 	}
 
 	/**
-	 * @param nodeId the nodeId to set
+	 * @param street the street to set
 	 */
-	public void setNodeId(int nodeId) {
-		this.nodeId = nodeId;
+	public void setStreet(Street street) {
+		this.street = street;
 	}
 	
 }

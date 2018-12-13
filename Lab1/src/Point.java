@@ -47,7 +47,7 @@ public class Point {
 	 * @param p2
 	 * @return euclidean distance of the two input points
 	 */
-	public double euclideanDistance(Point p1, Point p2) {
+	public static double euclideanDistance(Point p1, Point p2) {
 		return Math.sqrt((Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2)));
 	}
 

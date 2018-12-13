@@ -29,6 +29,12 @@ public class Taxi extends Point{
 	public void setTaxiId(int taxiId) {
 		this.taxiId = taxiId;
 	}
+
+	@Override
+	public String toString() {
+		return "Taxi with taxiId=" + taxiId + " x= " + x + " y= " + y ;
+	}
+	
 	
 }
 	

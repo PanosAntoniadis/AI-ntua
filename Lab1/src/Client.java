@@ -30,7 +30,7 @@ public class Client extends Point {
 
 	@Override
 	public String toString() {
-		return "Client [clientStreet=" + clientStreet.toString() + " x= " + x + " y= " + y + "]";
+		return "Client with streetId=" + clientStreet.streetId + " streetName " + clientStreet.streetName + " x= " + x + " y= " + y + "]";
 	}
 	
 	Street closestStreet(double x, double y) {

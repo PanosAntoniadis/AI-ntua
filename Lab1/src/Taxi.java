@@ -1,13 +1,13 @@
 /**
  * A class representing a taxi in the map using its longitude x, its latitude y and its unique id.
-*/	
+*/
 public class Taxi extends Point{
 	int taxiId;
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param taxiId
+	 * @param x longitude
+	 * @param y latitude
+	 * @param taxiId unique id
 	 */
 	public Taxi(double x, double y, int taxiId) {
 		super(x, y);
@@ -22,7 +22,7 @@ public class Taxi extends Point{
 	}
 
 	/**
-	 * @param taxiId the taxiId to set
+	 * @param taxiId the unique id to set
 	 */
 	public void setTaxiId(int taxiId) {
 		this.taxiId = taxiId;

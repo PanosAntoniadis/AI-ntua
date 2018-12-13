@@ -10,6 +10,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class TaxiBeat {
 
@@ -70,6 +71,7 @@ public class TaxiBeat {
         /**
          * Read client.csv file and create 
          */
+        Client client = null;
         try (BufferedReader br = new BufferedReader(new FileReader(taxisFile))) {
         	headerLine = br.readLine();
             line = br.readLine();
@@ -77,10 +79,85 @@ public class TaxiBeat {
             * Use comma as separator
             */
             fields = line.split(cvsSplitBy);
-            Client client = new Client(Double.parseDouble(fields[0]), Double.parseDouble(fields[1]));
+            client = new Client(Double.parseDouble(fields[0]), Double.parseDouble(fields[1]));
        } catch (IOException e) {
             e.printStackTrace();
             }
+        
+        /**=
+        for (Node currentNode : Node.nodes) {
+        	System.out.println(currentNode.toString());
+        }
+        
+        for (Taxi currentTaxi : Taxi.taxis) {
+        	System.out.println(currentTaxi.toString());
+        }
+        
+		System.out.println(client.toString());
+		*/
+        
+        /**
+         * 
+         */
+        ArrayList<Node> currentListOfNodes = null;
+        Street prevStreet = null;
+        Node currentNode = null;
+        for (int i = 0; i < Node.nodes.size(); i++) {
+        	currentNode = Node.nodes.get(i);
+        	if (!currentNode.getStreet().equals(prevStreet)){
+        		if (prevStreet != null) {
+        			Street.streetNodes.put(prevStreet, currentListOfNodes);
+        		}
+        		currentListOfNodes = new ArrayList<Node>(); 
+        		currentListOfNodes.add(currentNode);
+        		prevStreet = currentNode.getStreet();
+        	}
+        	else {
+        		currentListOfNodes.add(currentNode);
+        	}
+        }
+        Street.streetNodes.put(currentNode.getStreet(), currentListOfNodes);
+
+        /**
+        for (Street street : Street.streetNodes.keySet()){
+            String key = street.toString();
+            System.out.println("Key: " + key);
+            System.out.println("Value");
+            for (Node node : Street.streetNodes.get(street)) {  
+            	System.out.println(node);  
+            }
+        }
+        */
+        
+        for (int i = 0; i < Node.nodes.size(); i++) {
+        	currentNode = Node.nodes.get(i);
+        	int count = 1;
+        	if (!Street.pointCrossings.containsKey(currentNode)){
+        		ArrayList<Street> streets = new ArrayList<Street>();
+        		streets.add(currentNode.getStreet());
+        		for (int j = i+1; j < Node.nodes.size(); j++) {
+        			if ((currentNode.getX() == Node.nodes.get(j).getX()) && (currentNode.getY() == Node.nodes.get(j).getY())){
+                		streets.add(Node.nodes.get(j).getStreet());
+                		count ++;
+        			}
+        		}
+        		if (count >= 2) {
+        			Street.pointCrossings.put(currentNode, streets);
+        		}
+        	}
+        }
+        /**
+        for (Point point : Street.pointCrossings.keySet()){
+            String key = point.toString();
+            System.out.println("Key: " + key);
+            System.out.println("Value");
+            for (Street street : Street.pointCrossings.get(point)) {  
+            	System.out.println(street);  
+            }
+        }
+        */
+        System.out.println(Street.pointCrossings.size());
+        System.out.println(Street.streetNodes.size());
         
 	}
 

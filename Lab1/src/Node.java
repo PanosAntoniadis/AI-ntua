@@ -1,15 +1,18 @@
+import java.util.*; 
+
 /**
  * A class representing a node using its longitude x, latitude y and the street it belongs to.
 */
 public class Node extends Point {
 	Street street;
-
+	static ArrayList<Node> nodes = new ArrayList<Node>();
+	
 	/**
 	 * @param x longitude
 	 * @param y latitude
 	 * @param Street street
 	 */
-	public Node(int x, int y, Street street) {
+	public Node(double x, double y, Street street) {
 		super(x, y);
 		this.street = street;
 	}
@@ -27,5 +30,12 @@ public class Node extends Point {
 	public void setStreet(Street street) {
 		this.street = street;
 	}
+
+	@Override
+	public String toString() {
+		return "Node [street=" + street.streetId + ", x=" + x + ", y=" + y + "]";
+	}
+	
+	
 	
 }

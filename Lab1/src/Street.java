@@ -66,5 +66,21 @@ public class Street {
 	public String toString() {
 		return "Street with streetId=" + streetId + ", streetName=" + streetName + "]";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Street other = (Street) obj;
+		if (streetId != other.streetId)
+			return false;
+		return true;
+	}
+	
+	
 
 }

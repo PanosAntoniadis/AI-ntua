@@ -51,6 +51,23 @@ public class Point {
 		return Math.sqrt((Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2)));
 	}
 
+	Street closestStreetByPoint(Point p) {
+		Street minStreet = null;
+		double minDistance = 1000000000;
+		for (Node currentNode : Node.nodes) {
+			if (euclideanDistance(p, currentNode) < minDistance) {
+				minStreet = currentNode.getStreet();
+				minDistance = euclideanDistance(p, currentNode);
+			}
+		}
+		if (minStreet != null) {
+			return minStreet;
+		}
+		else {
+			System.out.println("Error in finding closest street to client");
+			return null;
+		}
+	}
 	
 }
 

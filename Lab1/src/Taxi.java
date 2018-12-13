@@ -4,6 +4,7 @@ import java.util.*;
 */
 public class Taxi extends Point{
 	int taxiId;
+	Street closestStreet;
 	static ArrayList<Taxi> taxis = new ArrayList<Taxi>();
 	
 	/**
@@ -14,6 +15,7 @@ public class Taxi extends Point{
 	public Taxi(double x, double y, int taxiId) {
 		super(x, y);
 		this.taxiId = taxiId;
+		this.closestStreet = closestStreetByPoint(this);
 	}
 
 	/**
@@ -32,7 +34,8 @@ public class Taxi extends Point{
 
 	@Override
 	public String toString() {
-		return "Taxi with taxiId=" + taxiId + " x= " + x + " y= " + y ;
+		return "Taxi with taxiId=" + taxiId + " closest streetId = " + closestStreet.streetId + " streetName " +
+				closestStreet.streetName + "x= " + x + " y= " + y ;
 	}
 	
 	

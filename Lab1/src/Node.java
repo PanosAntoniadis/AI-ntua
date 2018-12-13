@@ -33,9 +33,8 @@ public class Node extends Point {
 
 	@Override
 	public String toString() {
-		return "Node [street=" + street.streetId + ", x=" + x + ", y=" + y + "]";
+		return "Node [street=" + street.toString() + ", x=" + x + ", y=" + y + "]";
 	}
-	
 	
 	
 }

@@ -22,14 +22,14 @@ public class TaxiBeat {
 		 * Define the path of the csv files to read and csv separator (comma).
 		 */
 		String nodesFile = "./nodes1-100.csv";
-		String taxisFile = "./taxis.csv";
+		String taxisFile = "./taxis10-12.csv";
 		String clientFile = "./client.csv";
         String line = "";
         String cvsSplitBy = ",";
         String headerLine;
         String[] fields;
         /**
-         * Read nodes.csv file and keep all nodes in an arraylist.
+         * Read nodes.csv file and keep all nodes in a list.
          */
         try (BufferedReader br = new BufferedReader(new FileReader(nodesFile))) {
         	headerLine = br.readLine();
@@ -39,6 +39,9 @@ public class TaxiBeat {
                  */
                 fields = line.split(cvsSplitBy);
                 Street street;
+                /**
+                 * Check if current node provides the name of its street.
+                 */
                 if (fields.length == 4) {
                 	street = new Street(Integer.parseInt(fields[2]), fields[3]);
                 }
@@ -54,7 +57,7 @@ public class TaxiBeat {
         }
         
         /**
-         * Read taxis.csv file and keep all taxis in an arraylist.
+         * Read taxis.csv file and keep all taxis in a list.
          */
         try (BufferedReader br = new BufferedReader(new FileReader(taxisFile))) {
         	headerLine = br.readLine();
@@ -73,32 +76,20 @@ public class TaxiBeat {
         
         /**
          * Read client.csv file and create 
-         
+         */
         Client client = null;
-        try (BufferedReader br = new BufferedReader(new FileReader(taxisFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(clientFile))) {
         	headerLine = br.readLine();
             line = br.readLine();
-            
+            /**
             * Use comma as separator
-            
+            */
             fields = line.split(cvsSplitBy);
             client = new Client(Double.parseDouble(fields[0]), Double.parseDouble(fields[1]));
        } catch (IOException e) {
             e.printStackTrace();
             }
-        */
-        /**=
-        for (Node currentNode : Node.nodes) {
-        	System.out.println(currentNode.toString());
-        }
-        
-        for (Taxi currentTaxi : Taxi.taxis) {
-        	System.out.println(currentTaxi.toString());
-        }
-        
-		System.out.println(client.toString());
-		*/
-        
+         
         /**
          * Compute streetNodes hashmap that contains the nodes that exist in each road.
          */
@@ -120,18 +111,7 @@ public class TaxiBeat {
         	}
         }
         Street.streetNodes.put(currentNode.getStreet(), currentListOfNodes);
-
-        /**
-        for (Street street : Street.streetNodes.keySet()){
-            String key = street.toString();
-            System.out.println("Key: " + key);
-            System.out.println("Value");
-            for (Node node : Street.streetNodes.get(street)) {  
-            	System.out.println(node);  
-            }
-        }
-        */
-        
+      
         /**
          * Compute pointCrossings that contains all the Crossings of the map.
          */
@@ -153,25 +133,10 @@ public class TaxiBeat {
         	}
         }
         
+        State startState = new State(client.getX(), client.getY(), client.getClosestStreet(), 0, false);
         
-        for (Point point : Street.pointCrossings.keySet()){
-            String key = point.toString();
-            System.out.println("Key: " + key);
-            System.out.println("Value");
-            for (Street street : Street.pointCrossings.get(point)) {  
-            	System.out.println(street);  
-            }
-        }
         
-        //System.out.println(Street.pointCrossings);
-        
-        //System.out.println(Street.pointCrossings);
-    
-        
-        System.out.println(Street.pointCrossings.size());
-        System.out.println(Street.streetNodes.size());
-        
-
+      
        
 	}
 

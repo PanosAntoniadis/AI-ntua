@@ -7,6 +7,7 @@ public class State extends Node{
 	private double distance;
 	private double heuristic;
 	private boolean isGoal;
+	private State previous;
 	private ArrayList<State> myChildren = new ArrayList<State>();
 	
 	/**
@@ -17,12 +18,13 @@ public class State extends Node{
 	 * @param heuristic
 	 * @param isGoal
 	 */
-	public State(double x, double y, Street street, double distance, boolean isGoal) {
+	public State(double x, double y, Street street, double distance, boolean isGoal, State previous) {
 		super(x, y, street);
 		this.distance = distance;
 		this.heuristic = computeHeuristic();
 		this.isGoal = isGoal;
-		this.myChildren = null; 
+		this.myChildren = null;
+		this.previous = previous;
 	}
 
 	/**
@@ -67,6 +69,21 @@ public class State extends Node{
 		this.isGoal = isGoal;
 	}
 
+	
+	/**
+	 * @return the previous
+	 */
+	public State getPrevious() {
+		return previous;
+	}
+
+	/**
+	 * @param previous the previous to set
+	 */
+	public void setPrevious(State previous) {
+		this.previous = previous;
+	}
+
 	@Override
 	public String toString() {
 		return "State with x = " + getX() + " y = " + getY() + " street id " + getStreet().getStreetId() + " street name " + getStreet().getStreetName() +
@@ -82,7 +99,7 @@ public class State extends Node{
 		for (Street crossingStreet : Street.pointCrossings.get(this)) {
 			Node closestNode = getClosestNode(Street.streetNodes.get(crossingStreet));
 			double closestNodeDistance = distance + euclideanDistance(this, closestNode);
-			State closestNodeState = new State(closestNode.getX(), closestNode.getY(), crossingStreet, closestNodeDistance, closestNode.isTaxi());
+			State closestNodeState = new State(closestNode.getX(), closestNode.getY(), crossingStreet, closestNodeDistance, closestNode.isTaxi(), this);
 			children.add(closestNodeState);
 		}
 		return children;

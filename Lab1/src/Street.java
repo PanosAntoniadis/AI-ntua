@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-
 /**
  * A class representing a street using its unique id and its name if given.
 */
@@ -8,7 +7,7 @@ public class Street {
 	private int streetId;
 	private String streetName;
 	/**
-	 * Define a HashMap that contains for each street (key) the nodes it contains (values).
+	 * Define a HashMap that contains for each street (key) all its nodes (values).
 	 */
 	static HashMap<Street, ArrayList<Node>> streetNodes = new HashMap<>();
 	/**
@@ -64,7 +63,7 @@ public class Street {
 
 	@Override
 	public String toString() {
-		return "Street with streetId=" + streetId + ", streetName=" + streetName + "]";
+		return "Street with streetId = " + streetId + " streetName = " + streetName;
 	}
 	
 	@Override
@@ -80,7 +79,4 @@ public class Street {
 			return false;
 		return true;
 	}
-	
-	
-
 }

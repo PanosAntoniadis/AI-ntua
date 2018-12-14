@@ -36,5 +36,41 @@ public class Node extends Point {
 		return "Node with streetId=" + street.getStreetId() + " streetName= " + street.getStreetName() + ", x=" + getX() + ", y=" + getY();
 	}
 	
+	/**
+	 * 
+	 * @param currentStreet a list containing all the points in the same street
+	 * @return the closes point between the points in the input list
+	 */
+	public Node getClosestNode(ArrayList<Node> currentStreet) {
+		Node closestNode = null;
+		double minDistance = 1000000;
+		for( Node currentNode : currentStreet) {
+			if ((euclideanDistance(this, currentNode) < minDistance) && !currentNode.equals(this)){
+				minDistance = euclideanDistance(this, currentNode);
+				closestNode = currentNode;
+			}
+		}
+		return closestNode;
+	}
+	
+	public double computeHeuristic() {
+		double minHeuristic = 1000000;
+		for( Taxi taxi : Taxi.taxis) {
+			if (euclideanDistance(taxi, this) < minHeuristic) {
+				minHeuristic = euclideanDistance(taxi, this);
+			}
+		}
+		return minHeuristic;
+	}
+	
+	public boolean isTaxi() {
+		for( Taxi taxi : Taxi.taxis) {
+			if ((taxi.getX() == getX()) && (taxi.getY() == getY())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 }

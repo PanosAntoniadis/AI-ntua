@@ -1,3 +1,4 @@
+package taxibeat;
 import java.util.*;
 /**
  * A class representing a taxi in the map using its longitude x, its latitude y and its unique id.

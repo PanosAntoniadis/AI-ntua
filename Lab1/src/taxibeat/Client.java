@@ -1,3 +1,5 @@
+package taxibeat;
+
 /**
  * A class representing a client in the map using its longitude x, its latitude y and the
  * street that is closest to him.

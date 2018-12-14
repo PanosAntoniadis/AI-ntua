@@ -1,3 +1,4 @@
+package taxibeat;
 /**
 * The Taxibeat program implements an application finds
 * the closest available taxi given as input your geographical
@@ -11,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.SortedSet;
+import java.util.*;
 
 public class TaxiBeat {
 
@@ -18,7 +21,7 @@ public class TaxiBeat {
 		/**
 		 * Define the path of the csv files to read and csv separator (comma).
 		 */
-		String nodesFile = "./nodes.csv";
+		String nodesFile = "./nodes1-100.csv";
 		String taxisFile = "./taxis.csv";
 		String clientFile = "./client.csv";
         String line = "";
@@ -70,20 +73,20 @@ public class TaxiBeat {
         
         /**
          * Read client.csv file and create 
-         */
+         
         Client client = null;
         try (BufferedReader br = new BufferedReader(new FileReader(taxisFile))) {
         	headerLine = br.readLine();
             line = br.readLine();
-            /**
+            
             * Use comma as separator
-            */
+            
             fields = line.split(cvsSplitBy);
             client = new Client(Double.parseDouble(fields[0]), Double.parseDouble(fields[1]));
        } catch (IOException e) {
             e.printStackTrace();
             }
-        
+        */
         /**=
         for (Node currentNode : Node.nodes) {
         	System.out.println(currentNode.toString());
@@ -97,7 +100,7 @@ public class TaxiBeat {
 		*/
         
         /**
-         * 
+         * Compute streetNodes hashmap that contains the nodes that exist in each road.
          */
         ArrayList<Node> currentListOfNodes = null;
         Street prevStreet = null;
@@ -129,6 +132,9 @@ public class TaxiBeat {
         }
         */
         
+        /**
+         * Compute pointCrossings that contains all the Crossings of the map.
+         */
         for (int i = 0; i < Node.nodes.size(); i++) {
         	currentNode = Node.nodes.get(i);
         	int count = 1;
@@ -146,7 +152,8 @@ public class TaxiBeat {
         		}
         	}
         }
-        /**
+        
+        
         for (Point point : Street.pointCrossings.keySet()){
             String key = point.toString();
             System.out.println("Key: " + key);
@@ -155,10 +162,17 @@ public class TaxiBeat {
             	System.out.println(street);  
             }
         }
-        */
+        
+        //System.out.println(Street.pointCrossings);
+        
+        //System.out.println(Street.pointCrossings);
+    
+        
         System.out.println(Street.pointCrossings.size());
         System.out.println(Street.streetNodes.size());
         
+
+       
 	}
 
 }

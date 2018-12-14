@@ -1,3 +1,4 @@
+package taxibeat;
 import java.util.*;
 /**
  * A class representing a node using its longitude x,its latitude y and the street it belongs to.

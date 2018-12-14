@@ -1,3 +1,5 @@
+package taxibeat;
+import java.util.ArrayList;
 /**
  * A class representing a state of the world when running the A* algorithm.
 */
@@ -5,6 +7,7 @@ public class State extends Node{
 	private double distance;
 	private double heuristic;
 	private boolean isGoal;
+	private ArrayList<State> myChildren = new ArrayList<State>();
 	
 	/**
 	 * @param x
@@ -17,8 +20,9 @@ public class State extends Node{
 	public State(double x, double y, Street street, double distance, double heuristic, boolean isGoal) {
 		super(x, y, street);
 		this.distance = distance;
-		this.heuristic = heuristic;
+		this.heuristic = computeHeuristic();
 		this.isGoal = isGoal;
+		this.myChildren = null; 
 	}
 
 	/**
@@ -68,6 +72,17 @@ public class State extends Node{
 		return "State with x " + getX() + " y " + getY() + " street id " + getStreet().toString() 
 				+ " distance= " + distance + ", heuristic=" + heuristic + ", isGoal=" + isGoal ;
 	}
+	
+	/**
+	 * Function that takes a state and returns /
+	 * 
+	 
+	public ArrayList<State> getMyChildren(){
+		Street myStreet = getStreet();
+		Node closestNode = getClosestNode(Street.streetNodes.get(myStreet));
+		//State closestNodeState = new State(closestNode.getX(), closestNode.getY(), distance + euclideanDistance(this, closestNode),
+			//	closestNode.computeHeuristic(), closestNode.isTaxi());
+	}*/
 	
 	
 	

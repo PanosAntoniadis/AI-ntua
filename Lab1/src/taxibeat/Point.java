@@ -1,3 +1,4 @@
+package taxibeat;
 /**
  * A class representing a point in the map using its longitude x and its latitude y.
 */

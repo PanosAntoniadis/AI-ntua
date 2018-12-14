@@ -34,7 +34,7 @@ public class Taxi extends Point{
 
 	@Override
 	public String toString() {
-		return "Taxi with taxiId=" + taxiId + " closest streetId = " + closestStreet.getStreetId() + " streetName " +
+		return "Taxi with taxiId=" + taxiId + " closest streetId = " + closestStreet.getStreetId() + " streetName " + 
 				closestStreet.getStreetName() + "x= " + getX() + " y= " + getY() ;
 	}
 	

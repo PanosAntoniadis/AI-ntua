@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * A class representing a point in the map using its longitude x and its latitude y.
 */
@@ -50,14 +52,17 @@ public class Point {
 	public static double euclideanDistance(Point p1, Point p2) {
 		return Math.sqrt((Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2)));
 	}
-
-	Street closestStreetByPoint(Point p) {
+	
+	/**
+	 * @return the street of the closest point
+	 */
+	Street closestStreetByPoint() {
 		Street minStreet = null;
 		double minDistance = 1000000000;
 		for (Node currentNode : Node.nodes) {
-			if (euclideanDistance(p, currentNode) < minDistance) {
+			if (euclideanDistance(this, currentNode) < minDistance) {
 				minStreet = currentNode.getStreet();
-				minDistance = euclideanDistance(p, currentNode);
+				minDistance = euclideanDistance(this, currentNode);
 			}
 		}
 		if (minStreet != null) {
@@ -68,6 +73,25 @@ public class Point {
 			return null;
 		}
 	}
+	
+	/**
+	 * 
+	 * @param currentStreet a list containing all the points in the same street
+	 * @return the closes point between the points in the input list
+	 */
+	public Point getClosestPoint(ArrayList<Point> currentStreet) {
+		Point closestPoint = null;
+		double minDistance = 1000000;
+		for( Point currentPoint : currentStreet) {
+			if ((euclideanDistance(this, currentPoint) < minDistance) && !currentPoint.equals(this)){
+				minDistance = euclideanDistance(this, currentPoint);
+				closestPoint = currentPoint;
+			}
+		}
+		return closestPoint;
+	}
+	
+	
 	
 }
 

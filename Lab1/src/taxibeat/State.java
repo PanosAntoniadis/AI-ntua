@@ -17,10 +17,10 @@ public class State extends Node{
 	 * @param heuristic
 	 * @param isGoal
 	 */
-	public State(double x, double y, Street street, double distance, double heuristic, boolean isGoal) {
+	public State(double x, double y, Street street, double distance, boolean isGoal) {
 		super(x, y, street);
 		this.distance = distance;
-		this.heuristic = heuristic;
+		this.heuristic = computeHeuristic();
 		this.isGoal = isGoal;
 		this.myChildren = null; 
 	}
@@ -69,8 +69,8 @@ public class State extends Node{
 
 	@Override
 	public String toString() {
-		return "State with x " + getX() + " y " + getY() + " street id " + getStreet().toString() 
-				+ " distance = " + distance + ", heuristic = " + heuristic + ", isGoal = " + isGoal ;
+		return "State with x = " + getX() + " y = " + getY() + " street id " + getStreet().getStreetId() + " street name " + getStreet().getStreetName() +
+				 " distance = " + distance + ", heuristic = " + heuristic + ", isGoal = " + isGoal ;
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public class State extends Node{
 		for (Street crossingStreet : Street.pointCrossings.get(this)) {
 			Node closestNode = getClosestNode(Street.streetNodes.get(crossingStreet));
 			double closestNodeDistance = distance + euclideanDistance(this, closestNode);
-			State closestNodeState = new State(closestNode.getX(), closestNode.getY(), crossingStreet, closestNodeDistance, closestNode.computeHeuristic(), closestNode.isTaxi());
+			State closestNodeState = new State(closestNode.getX(), closestNode.getY(), crossingStreet, closestNodeDistance, closestNode.isTaxi());
 			children.add(closestNodeState);
 		}
 		return children;

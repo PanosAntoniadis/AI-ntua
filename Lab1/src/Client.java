@@ -2,6 +2,7 @@
  * A class representing a client in the map using its longitude x, its latitude y and the
  * street that is closest to him.
 */
+
 public class Client extends Point {
 	private Street closestStreet;
 
@@ -11,27 +12,25 @@ public class Client extends Point {
 	 */
 	public Client(double x, double y) {
 		super(x, y);
-		this.closestStreet = closestStreetByPoint(this);
+		this.closestStreet = closestStreetByPoint();
 	}
 
 	/**
-	 * @return the clientStreet
+	 * @return the closestStreet
 	 */
-	public Street getClientStreet() {
+	public Street getClosestStreet() {
 		return closestStreet;
 	}
 
 	/**
-	 * @param clientStreet the clientStreet to set
+	 * @param closestStreet the closestStreet to set
 	 */
-	public void setClientStreet(Street clientStreet) {
-		this.closestStreet = clientStreet;
+	public void setClosestStreet(Street closestStreet) {
+		this.closestStreet = closestStreet;
 	}
 
 	@Override
 	public String toString() {
-		return "Client with streetId=" + closestStreet.getStreetId() + " streetName " + closestStreet.getStreetName() + " x= " + getX() + " y= " + getY() + "]";
-	}
-	
-	
+		return "Client with streetId = " + closestStreet.getStreetId() + " streetName " + closestStreet.getStreetName() + " x = " + getX() + " y = " + getY() + "]";
+	}	
 }

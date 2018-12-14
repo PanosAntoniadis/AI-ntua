@@ -15,7 +15,7 @@ public class Taxi extends Point{
 	public Taxi(double x, double y, int taxiId) {
 		super(x, y);
 		this.taxiId = taxiId;
-		this.closestStreet = closestStreetByPoint(this);
+		this.closestStreet = closestStreetByPoint();
 	}
 
 	/**
@@ -34,8 +34,8 @@ public class Taxi extends Point{
 
 	@Override
 	public String toString() {
-		return "Taxi with taxiId=" + taxiId + " closest streetId = " + closestStreet.getStreetId() + " streetName " + 
-				closestStreet.getStreetName() + "x= " + getX() + " y= " + getY() ;
+		return "Taxi with taxiId = " + taxiId + " closest streetId = " + closestStreet.getStreetId() + " streetName " + 
+				closestStreet.getStreetName() + " x = " + getX() + " y = " + getY() ;
 	}
 	
 	

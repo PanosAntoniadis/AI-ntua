@@ -74,22 +74,6 @@ public class Point {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param currentStreet a list containing all the points in the same street
-	 * @return the closes point between the points in the input list
-	 */
-	public Point getClosestPoint(ArrayList<Point> currentStreet) {
-		Point closestPoint = null;
-		double minDistance = 1000000;
-		for( Point currentPoint : currentStreet) {
-			if ((euclideanDistance(this, currentPoint) < minDistance) && !currentPoint.equals(this)){
-				minDistance = euclideanDistance(this, currentPoint);
-				closestPoint = currentPoint;
-			}
-		}
-		return closestPoint;
-	}
 	
 	
 	

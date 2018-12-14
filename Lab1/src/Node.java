@@ -1,10 +1,12 @@
-import java.util.*; 
-
+import java.util.*;
 /**
- * A class representing a node using its longitude x, latitude y and the street it belongs to.
+ * A class representing a node using its longitude x,its latitude y and the street it belongs to.
 */
 public class Node extends Point {
 	private Street street;
+	/**
+	 * A list that contains all the nodes in the map.
+	 */
 	static ArrayList<Node> nodes = new ArrayList<Node>();
 	
 	/**
@@ -33,13 +35,13 @@ public class Node extends Point {
 
 	@Override
 	public String toString() {
-		return "Node with streetId=" + street.getStreetId() + " streetName= " + street.getStreetName() + ", x=" + getX() + ", y=" + getY();
+		return "Node with streetId = " + street.getStreetId() + " streetName = " + street.getStreetName() + " x = " + getX() + ", y = " + getY();
 	}
 	
 	/**
 	 * 
 	 * @param currentStreet a list containing all the points in the same street
-	 * @return the closes point between the points in the input list
+	 * @return the closest point among the points in the input list
 	 */
 	public Node getClosestNode(ArrayList<Node> currentStreet) {
 		Node closestNode = null;
@@ -53,6 +55,9 @@ public class Node extends Point {
 		return closestNode;
 	}
 	
+	/**
+	 * @return the euclidean distance to closest available taxi.
+	 */
 	public double computeHeuristic() {
 		double minHeuristic = 1000000;
 		for( Taxi taxi : Taxi.taxis) {
@@ -63,6 +68,9 @@ public class Node extends Point {
 		return minHeuristic;
 	}
 	
+	/**
+	 * @return check if a node is a taxi 
+	 */
 	public boolean isTaxi() {
 		for( Taxi taxi : Taxi.taxis) {
 			if ((taxi.getX() == getX()) && (taxi.getY() == getY())) {
@@ -71,6 +79,4 @@ public class Node extends Point {
 		}
 		return false;
 	}
-	
-	
 }

@@ -20,6 +20,20 @@ public class Taxi extends Point{
 	}
 
 	/**
+	 * @return the closestStreet
+	 */
+	public Street getClosestStreet() {
+		return closestStreet;
+	}
+
+	/**
+	 * @param closestStreet the closestStreet to set
+	 */
+	public void setClosestStreet(Street closestStreet) {
+		this.closestStreet = closestStreet;
+	}
+
+	/**
 	 * @return the taxiId
 	 */
 	public int getTaxiId() {

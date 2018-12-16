@@ -1,6 +1,7 @@
 package taxibeat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 /**
  * A class representing a street using its unique id and its name if given.
 */
@@ -66,18 +67,26 @@ public class Street {
 	public String toString() {
 		return "Street with streetId = " + streetId + " streetName = " + streetName;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(streetId, streetName);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Street other = (Street) obj;
-		if (streetId != other.streetId)
-			return false;
-		return true;
+		return streetId == other.streetId && Objects.equals(streetName, other.streetName);
 	}
+	
+	
 }

@@ -58,20 +58,20 @@ public class Point {
 	/**
 	 * @return the street of the closest point
 	 */
-	Street closestStreetByPoint() {
-		Street minStreet = null;
+	Node closestNodeByPoint() {
+		Node minNode = null;
 		double minDistance = 1000000000;
 		for (Node currentNode : Node.nodes) {
 			if (euclideanDistance(this, currentNode) < minDistance) {
-				minStreet = currentNode.getStreet();
+				minNode = currentNode;
 				minDistance = euclideanDistance(this, currentNode);
 			}
 		}
-		if (minStreet != null) {
-			return minStreet;
+		if (minNode != null) {
+			return minNode;
 		}
 		else {
-			System.out.println("Error in finding closest street");
+			System.out.println("Error in finding closest node");
 			return null;
 		}
 	}

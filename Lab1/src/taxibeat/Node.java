@@ -5,6 +5,8 @@ import java.util.*;
 */
 public class Node extends Point {
 	private Street street;
+	private boolean available;
+	private boolean isGoal;
 	/**
 	 * A list that contains all the nodes in the map.
 	 */
@@ -15,9 +17,41 @@ public class Node extends Point {
 	 * @param y latitude
 	 * @param Street street
 	 */
-	public Node(double x, double y, Street street) {
+	public Node(double x, double y, Street street, boolean isGoal) {
 		super(x, y);
 		this.street = street;
+		this.available = true;
+		this.isGoal = isGoal;
+	}
+
+	/**
+	 * @return the isGoal
+	 */
+	public boolean isGoal() {
+		return isGoal;
+	}
+
+
+	/**
+	 * @param isGoal the isGoal to set
+	 */
+	public void setGoal(boolean isGoal) {
+		this.isGoal = isGoal;
+	}
+
+
+	/**
+	 * @return the available
+	 */
+	public boolean isAvailable() {
+		return available;
+	}
+
+	/**
+	 * @param available the available to set
+	 */
+	public void setAvailable(boolean available) {
+		this.available = available;
 	}
 
 	/**
@@ -36,7 +70,7 @@ public class Node extends Point {
 
 	@Override
 	public String toString() {
-		return "Node with streetId = " + street.getStreetId() + " streetName = " + street.getStreetName() + " x = " + getX() + ", y = " + getY();
+		return "Node with streetId = " + street.getStreetId() + " streetName = " + street.getStreetName() + " x = " + getX() + ", y = " + getY() + " goal " + isGoal;
 	}
 	
 	/**
@@ -45,29 +79,25 @@ public class Node extends Point {
 	 * @return the closest point among the points in the input list
 	 */
 	public Node getClosestNode(ArrayList<Node> currentStreet) {
+		if (currentStreet.size() == 0) {
+			System.out.println("Street is empty");
+			return null;
+		}
 		Node closestNode = null;
 		double minDistance = 1000000;
 		for( Node currentNode : currentStreet) {
-			if ((euclideanDistance(this, currentNode) < minDistance) && !currentNode.equals(this)){
+			if ((euclideanDistance(this, currentNode) < minDistance) && !currentNode.equals(this) && currentNode.isAvailable()){
 				minDistance = euclideanDistance(this, currentNode);
 				closestNode = currentNode;
 			}
 		}
+		System.out.println(closestNode);
+		if (closestNode != null) {
+			closestNode.setAvailable(false);
+		}
 		return closestNode;
 	}
 	
-	/**
-	 * @return the euclidean distance to closest available taxi.
-	 */
-	public double computeHeuristic() {
-		double minHeuristic = 1000000;
-		for( Taxi taxi : Taxi.taxis) {
-			if (euclideanDistance(taxi, this) < minHeuristic) {
-				minHeuristic = euclideanDistance(taxi, this);
-			}
-		}
-		return minHeuristic;
-	}
 	
 	/**
 	 * @return check if a node is a taxi 
@@ -80,4 +110,35 @@ public class Node extends Point {
 		}
 		return false;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(available, isGoal, street);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Node other = (Node) obj;
+		return available == other.available && isGoal == other.isGoal && Objects.equals(street, other.street);
+	}
+
+	
+	
+	
+	
 }

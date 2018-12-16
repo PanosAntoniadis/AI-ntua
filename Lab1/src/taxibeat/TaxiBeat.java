@@ -21,8 +21,8 @@ public class TaxiBeat {
 		/**
 		 * Define the path of the csv files to read and csv separator (comma).
 		 */
-		String nodesFile = "./nodes1-100.csv";
-		String taxisFile = "./taxis10-12.csv";
+		String nodesFile = "./node_test.csv";
+		String taxisFile = "./taxis1.csv";
 		String clientFile = "./client.csv";
         String line = "";
         String cvsSplitBy = ",";
@@ -48,7 +48,7 @@ public class TaxiBeat {
                 else {
                 	street = new Street(Integer.parseInt(fields[2]));
                 }
-                Node node = new Node(Double.parseDouble(fields[0]), Double.parseDouble(fields[1]), street);
+                Node node = new Node(Double.parseDouble(fields[0]), Double.parseDouble(fields[1]), street, false);
                 Node.nodes.add(node);
             }
 
@@ -89,7 +89,16 @@ public class TaxiBeat {
        } catch (IOException e) {
             e.printStackTrace();
             }
-         
+       
+        /**
+         * Add all taxis as nodes with isGoal true
+         */
+        for (Taxi taxi : Taxi.taxis) {
+        	Node.nodes.get(Node.nodes.indexOf(taxi.getClosestNode())).setGoal(true);
+        	System.out.println("Node of taxi");
+        	System.out.println(Node.nodes.get(Node.nodes.indexOf(taxi.getClosestNode())));
+        }
+       
         /**
          * Compute streetNodes hashmap that contains the nodes that exist in each road.
          */
@@ -112,10 +121,16 @@ public class TaxiBeat {
         }
         Street.streetNodes.put(currentNode.getStreet(), currentListOfNodes);
       
+        
+       
+        
         /**
          * Compute pointCrossings that contains all the Crossings of the map.
          */
         for (int i = 0; i < Node.nodes.size(); i++) {
+        	if (Node.nodes.get(i).getX() == 23.734351 && Node.nodes.get(i).getY() == 37.9761805) {
+        		System.out.println(Node.nodes.get(i).getStreet().getStreetName());
+        	}
         	currentNode = Node.nodes.get(i);
         	int count = 1;
         	if (!Street.pointCrossings.containsKey(currentNode)){
@@ -128,13 +143,87 @@ public class TaxiBeat {
         			}
         		}
         		if (count >= 2) {
-        			Street.pointCrossings.put(currentNode, streets);
+        			Point currentPoint = new Point(currentNode.getX(), currentNode.getY());
+        			Street.pointCrossings.put(currentPoint, streets);
         		}
         	}
         }
         
-        State startState = new State(client.getX(), client.getY(), client.getClosestStreet(), 0, false);
+       
         
+      
+        /**
+         * Create initial state for our algorithm.
+         */
+        State startState = new State(client.getClosestNode().getX(), client.getClosestNode().getY(), client.getClosestNode().getStreet(), Point.euclideanDistance(client, client.getClosestNode()), false, null);
+        System.out.println("My initial state is " + startState.toString());
+        /**
+         * Define two data structures that will be used for A* algorithm.
+         */
+        PriorityQueue<State> searchQueue = new PriorityQueue<State>(new StateComparator());
+        HashSet<Point> closedSet = new HashSet<Point>();
+        
+        searchQueue.add(startState);
+        boolean found = false;
+        int cnt = 0;
+        while(!searchQueue.isEmpty() && !found) {
+        	cnt ++;
+        	/*
+        	System.out.println(searchQueue.peek());
+        	
+        	System.out.println("BEFORE REMOVING THE FIRST");
+        	System.out.println("searchQueue contains ");
+        	System.out.println(searchQueue.toString());
+        	System.out.println("closedSet contains ");
+        	System.out.println(closedSet.toString());
+        	*/
+        	if (searchQueue.peek().isGoal()) {
+        		found = true;
+        		break;
+        	}
+        	State targetState = searchQueue.poll();        	
+        	targetState.setChildren();
+        	
+        	//System.out.println("Target state has following childre:");
+        	//System.out.println(targetState.getMyChildren());
+        	
+        	//System.out.println(targetState);
+        	if (targetState.getMyChildren() == null) {
+        		closedSet.add(new Point(targetState.getX(), targetState.getY()));
+        		continue;
+        	}
+        	//System.out.println("Adding children to seqrchQueue");
+        	for (State child : targetState.getMyChildren()) {
+        		if (!closedSet.contains(new Point(child.getX(), child.getY()))) {
+        			child.setHeuristic(child.computeHeuristic());
+        			searchQueue.add(child);
+        			//System.out.println("Added " + child.getStreet());
+        		}
+        	}
+        	closedSet.add(new Point(targetState.getX(), targetState.getY()));
+        	/*
+        	System.out.println("End of the loop with ");
+        	System.out.println("searchQueue");
+        	System.out.println(searchQueue.toString());
+        	System.out.println("closedSet");
+        	System.out.println(closedSet.toString());
+        	*/
+        }
+        
+        //System.out.println(searchQueue);
+        //System.out.println(closedSet);
+        System.out.println(found);
+       
+        
+        State finalState = searchQueue.poll();
+        System.out.println("X     Y");
+        System.out.println(finalState.getX() + "     " + finalState.getY());
+        State prevState = finalState.getPrevious();
+        while(prevState != null) {
+        	System.out.println(finalState.getX() + "     " + finalState.getY());
+        	//System.out.println(prevState);
+        	prevState = prevState.getPrevious();
+        }
         
       
        

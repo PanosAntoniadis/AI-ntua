@@ -5,7 +5,7 @@ import java.util.*;
 */
 public class Taxi extends Point{
 	private int taxiId;
-	private Street closestStreet;
+	private Node closestNode;
 	static ArrayList<Taxi> taxis = new ArrayList<Taxi>();
 	
 	/**
@@ -16,21 +16,21 @@ public class Taxi extends Point{
 	public Taxi(double x, double y, int taxiId) {
 		super(x, y);
 		this.taxiId = taxiId;
-		this.closestStreet = closestStreetByPoint();
+		this.closestNode = closestNodeByPoint();
 	}
 
 	/**
 	 * @return the closestStreet
 	 */
-	public Street getClosestStreet() {
-		return closestStreet;
+	public Node getClosestNode() {
+		return closestNode;
 	}
 
 	/**
 	 * @param closestStreet the closestStreet to set
 	 */
-	public void setClosestStreet(Street closestStreet) {
-		this.closestStreet = closestStreet;
+	public void setClosestNode(Node closestNode) {
+		this.closestNode = closestNode;
 	}
 
 	/**
@@ -49,8 +49,7 @@ public class Taxi extends Point{
 
 	@Override
 	public String toString() {
-		return "Taxi with taxiId = " + taxiId + " closest streetId = " + closestStreet.getStreetId() + " streetName " + 
-				closestStreet.getStreetName() + " x = " + getX() + " y = " + getY() ;
+		return "Taxi with taxiId = " + taxiId + " closest node = " + closestNode.toString() + " x = " + getX() + " y = " + getY() ;
 	}
 	
 	

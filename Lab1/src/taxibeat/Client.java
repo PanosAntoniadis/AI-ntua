@@ -6,7 +6,7 @@ package taxibeat;
 */
 
 public class Client extends Point {
-	private Street closestStreet;
+	private Node closestNode;
 
 	/**
 	 * @param x
@@ -14,25 +14,25 @@ public class Client extends Point {
 	 */
 	public Client(double x, double y) {
 		super(x, y);
-		this.closestStreet = closestStreetByPoint();
+		this.closestNode = closestNodeByPoint();
 	}
 
 	/**
 	 * @return the closestStreet
 	 */
-	public Street getClosestStreet() {
-		return closestStreet;
+	public Node getClosestNode() {
+		return closestNode;
 	}
 
 	/**
 	 * @param closestStreet the closestStreet to set
 	 */
-	public void setClosestStreet(Street closestStreet) {
-		this.closestStreet = closestStreet;
+	public void setClosestNode(Node closestNode) {
+		this.closestNode = closestNode;
 	}
 
 	@Override
 	public String toString() {
-		return "Client with streetId = " + closestStreet.getStreetId() + " streetName " + closestStreet.getStreetName() + " x = " + getX() + " y = " + getY() + "]";
+		return "Client with  = " + closestNode.toString() + " x = " + getX() + " y = " + getY() + "]";
 	}	
 }

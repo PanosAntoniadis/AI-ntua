@@ -1,6 +1,6 @@
 package taxibeat;
 /**
- * A class that implements the comparator for our priority queue based on the sum of the distance and the heuristic
+ * A class that implements the comparator for our tree set based on the sum of the distance and the heuristic
  */
 import java.util.Comparator;
 

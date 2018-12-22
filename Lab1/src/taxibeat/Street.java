@@ -1,4 +1,7 @@
 package taxibeat;
+
+import java.util.Objects;
+
 /**
  * A class representing a street using its unique id and its name if given.
 */
@@ -55,4 +58,33 @@ public class Street {
 	public String toString() {
 		return "Street with streetId = " + streetId + " streetName = " + streetName;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(streetId, streetName);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Street other = (Street) obj;
+		return streetId == other.streetId && Objects.equals(streetName, other.streetName);
+	}
+	
+	
+	
 }

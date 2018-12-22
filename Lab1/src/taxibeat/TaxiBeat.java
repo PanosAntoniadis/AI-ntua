@@ -21,7 +21,7 @@ public class TaxiBeat {
 	/**
 	 * A map that for each point (x,y) it gives us all the neighboring points.
 	 */
-	public static HashMap<Point, ArrayList<Node>> map;
+	public static HashMap<Point, ArrayList<Node>> map = new HashMap<Point, ArrayList<Node>>();
 	/**
 	 * The queue that keeps the states that have not yet extended.
 	 */
@@ -30,12 +30,7 @@ public class TaxiBeat {
 	 * A set that keeps all the states that have been extended.
 	 */
     public static ArrayList<Node> closedSet;
-    /**
-     * A list containing all the routes.
-     */
-    public static ArrayList<Route> routes = new ArrayList<Route>();
-    
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		/**
 		 * Define the path of the csv files to read and csv separator (comma).
 		 */
@@ -151,43 +146,48 @@ public class TaxiBeat {
             	"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";
         String kmlend = "</kml>";
         BufferedWriter writer = null;
-		try {
-			writer = new BufferedWriter(new FileWriter("routes.kml"));
-			writer.write(kmlstart);
-	        writer.write("<Document>\n");
-	        writer.write("<name>Taxi Routes</name>\n");
-	        writer.write("<Style id=\"green\">\n" + "<LineStyle>\n" + "<color>ff009900</color>\n" +
+		writer = new BufferedWriter(new FileWriter("routes.kml"));
+		writer.write(kmlstart);
+	    writer.write("<Document>\n");
+	    writer.write("<name>Taxi Routes</name>\n");
+	    writer.write("<Style id=\"green\">\n" + "<LineStyle>\n" + "<color>ff009900</color>\n" +
 	        				"<width>4</width>\n" + "</LineStyle>\n" + "</Style>\n");
-	        writer.write("<Style id=\"red\">\n" + "<LineStyle>\n" + "<color>ff0000ff</color>\n" + "<width>4</width>\n" + "</LineStyle>\n" +
+	    writer.write("<Style id=\"red\">\n" + "<LineStyle>\n" + "<color>ff0000ff</color>\n" + "<width>4</width>\n" + "</LineStyle>\n" +
 	        		"</Style>\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        
-      
+		
         /**
          * For each taxi compute the shortest route
          */
+	    Node clientNode = client.getClosestNode(); 
+	    double clientDistance = Point.haversine(client.getY(), client.getX(), clientNode.getY(), clientNode.getX());
+	    Node targetNode;
+	    Point targetPoint;
+	    Taxi currentTaxi;
+	    State startState, targetState;
+	    double initialDistance;
+	    boolean found;
         for(i = 0; i < Taxi.taxis.size(); i++) {	
         	/**
 	         * Create initial state for our algorithm.
 	         */
-	        Taxi currentTaxi = Taxi.taxis.get(i);
-	        State startState = new State(currentTaxi.getClosestNode().getX(), currentTaxi.getClosestNode().getY(), currentTaxi.getClosestNode().getStreet(), 0, null);
+	        currentTaxi = Taxi.taxis.get(i);
+	        initialDistance = Point.haversine(currentTaxi.getClosestNode().getY(), currentTaxi.getClosestNode().getX(), currentTaxi.getY(), currentTaxi.getX());
+	        startState = new State(currentTaxi.getClosestNode().getX(), currentTaxi.getClosestNode().getY(), currentTaxi.getClosestNode().getStreet(), initialDistance, null);
 	        /**
 	         * Define two data structures that will be used for A* algorithm.
 	         */
-	        
 	        searchQueue = new TreeSet<State>(new StateComparator());
 	        closedSet = new ArrayList<Node>();
-	        
+	        /**
+	         * The closest node to the current taxi is the root of the graph.
+	         */
 	        searchQueue.add(startState);
-	        boolean found = false;
-	        State targetState = null;
-	        Node targetNode = null;
-	        Point targetPoint = null;
+	        found = false;
 	        while(!searchQueue.isEmpty() && !found) {
-	        	if (searchQueue.first().getX() == client.getClosestNode().getX() && searchQueue.first().getY() == client.getClosestNode().getY()) {
+	        	if (searchQueue.first().getX() == clientNode.getX() && searchQueue.first().getY() == clientNode.getY()) {
+	        		/**
+	        		 * We reached the node of the client so break.
+	        		 */
 	        		found = true;
 	        		break;
 	        	}
@@ -202,66 +202,41 @@ public class TaxiBeat {
 	        		if (!closedSet.contains(child)) {
 	        			double childDistance = Point.haversine(targetState.getY(), targetState.getX(), child.getY(), child.getX());
 	        			searchQueue.add(new State(child.getX(), child.getY(), child.getStreet(), targetState.getDistance() + childDistance, targetState));
-	     
 	        		}
-	        		
 	        	}
 	        	closedSet.add(targetNode);        	
         }
 	        
-	    try {
-			writer.write("<Placemark>\n" +"<name>Taxi 2</name>\n" + " <styleUrl>#red</styleUrl>\n" + "<LineString>\n" +
-					"<altitudeMode>relative</altitudeMode>\n" + "<coordinates>\n");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	       
+		writer.write("<Placemark>\n" +"<name>Taxi 2</name>\n" + " <styleUrl>#red</styleUrl>\n" + "<LineString>\n" +
+					"<altitudeMode>relative</altitudeMode>\n" + "<coordinates>\n");   
 	
     	ArrayList<State> statesOfRoute = new ArrayList<State>();
         State finalState = searchQueue.pollFirst();
-	    System.out.println(found);
-
+	    if (found) {
+	    	System.out.println("For taxi " + i + " all went OK" + "\n");
+	    }
+	    else {
+	    	System.out.println("Couldn't reach client from taxi " + i + "\n");
+	    }
         statesOfRoute.add(finalState);
-        try {
-			writer.write(finalState.getX() + "," + finalState.getY() + ",0\n");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        System.out.println("X Y");
-        System.out.println(finalState.getX() + "," + finalState.getY());
+        writer.write(finalState.getX() + "," + finalState.getY() + ",0\n");
         State prevState = finalState.getPrevious();
         while(prevState != null) {
         	statesOfRoute.add(prevState);
-            try {
-				writer.write(prevState.getX() + "," + prevState.getY() + ",0\n");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	System.out.println(prevState.getX() + "," + prevState.getY());
-        	//System.out.println(prevState);
-        	prevState = prevState.getPrevious();
+            writer.write(prevState.getX() + "," + prevState.getY() + ",0\n");
+            prevState = prevState.getPrevious();
         }
-        routes.add(new Route(statesOfRoute, finalState.getDistance(), currentTaxi));
+        Route.routes.add(new Route(statesOfRoute, finalState.getDistance() + clientDistance, currentTaxi));
+		writer.write("</coordinates>\n" + "</LineString>\n" + "</Placemark>\n");
+        }
         
-        try {
-			writer.write("</coordinates>\n" + "</LineString>\n" + "</Placemark>\n");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-       
-	}
-        
-    try {
-    	writer.write("</Document>\n");
-    	writer.write("</kml>");
+		writer.write("</Document>\n");
+    	writer.write(kmlend);
 		writer.close();
-	} catch (IOException e) {
-		e.printStackTrace();
+		
+		for(Route route : Route.routes) {
+			System.out.println(route.getTaxi().getTaxiId() + " costs " + route.getCost() + "\n");
+		}
 	}
-	}
-	
 }
+

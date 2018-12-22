@@ -1,12 +1,13 @@
 package taxibeat;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public class Route {
 	private ArrayList<State> route = new ArrayList<State>();
 	private double cost;
 	private Taxi taxi;
-	public static ArrayList<Route> routes = new ArrayList<Route>();
+	public static TreeSet<Route> routes = new TreeSet<Route>(new RouteComparator());
 	
 	public Route(ArrayList<State> route, double cost, Taxi taxi) {
 		this.route = route;

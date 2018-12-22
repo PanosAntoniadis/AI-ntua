@@ -76,4 +76,6 @@ public class State extends Node{
 	public double computeHeuristic() {
 		return haversine(getY(), getX(), TaxiBeat.client.getY(), TaxiBeat.client.getX());
 	}
+	
+	
 }

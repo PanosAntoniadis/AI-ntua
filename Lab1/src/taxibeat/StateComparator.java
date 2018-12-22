@@ -13,6 +13,6 @@ public class StateComparator implements Comparator<State>{
 			return 1; 
 		else if (s1.getDistance() + s1.getHeuristic() < s2.getDistance() + s2.getHeuristic()) 
 			return -1; 
-		return 1; 
+		return 0; 
 	} 
 }

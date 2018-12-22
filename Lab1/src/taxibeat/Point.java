@@ -1,5 +1,7 @@
 package taxibeat;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 /**
@@ -71,7 +73,7 @@ public class Point {
  
         double a = Math.pow(Math.sin(dLat / 2),2) + Math.pow(Math.sin(dLon / 2),2) * Math.cos(lat1) * Math.cos(lat2);
         double c = 2 * Math.asin(Math.sqrt(a));
-        return R * c;
+        return round(R * c, 3);
     }
     
 	/**
@@ -116,6 +118,11 @@ public class Point {
 				&& Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
 	}
 
+	public static double round(double value, int places) {
+	    double scale = Math.pow(10, places);
+	    return Math.round(value * scale) / scale;
+	}
+	
 	@Override
 	public String toString() {
 		return "Point with x = " + x + ", y = " + y;

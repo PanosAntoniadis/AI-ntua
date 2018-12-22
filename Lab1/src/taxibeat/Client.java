@@ -2,7 +2,7 @@ package taxibeat;
 
 /**
  * A class representing a client in the map using its longitude x, its latitude y and the
- * street that is closest to him.
+ * node that is closest to him.
 */
 
 public class Client extends Point {
@@ -18,14 +18,14 @@ public class Client extends Point {
 	}
 
 	/**
-	 * @return the closestStreet
+	 * @return the closestNode
 	 */
 	public Node getClosestNode() {
 		return closestNode;
 	}
 
 	/**
-	 * @param closestStreet the closestStreet to set
+	 * @param closestNode the closestNode to set
 	 */
 	public void setClosestNode(Node closestNode) {
 		this.closestNode = closestNode;

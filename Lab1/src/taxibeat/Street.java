@@ -1,22 +1,10 @@
 package taxibeat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
 /**
  * A class representing a street using its unique id and its name if given.
 */
 public class Street {
 	private int streetId;
 	private String streetName;
-	/**
-	 * Define a HashMap that contains for each street (key) all its nodes (values).
-	 */
-	static HashMap<Street, ArrayList<Node>> streetNodes = new HashMap<>();
-	/**
-	 * Define a HashMap that contains for the crossing points (key) the streets it crosses (values).
-	 */
-	static HashMap<Point, ArrayList<Street>> pointCrossings = new HashMap<>();
-	
 	/**
 	 * @param streetId
 	 * @param streetName
@@ -67,26 +55,4 @@ public class Street {
 	public String toString() {
 		return "Street with streetId = " + streetId + " streetName = " + streetName;
 	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(streetId, streetName);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Street other = (Street) obj;
-		return streetId == other.streetId && Objects.equals(streetName, other.streetName);
-	}
-	
-	
 }

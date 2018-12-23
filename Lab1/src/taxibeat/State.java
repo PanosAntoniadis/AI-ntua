@@ -1,11 +1,15 @@
 package taxibeat;
+
+import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  * A class representing a state of the world when running the A* algorithm.
 */
 public class State extends Node{
 	private double distance;
 	private double heuristic;
-	private State previous;
+	private ArrayList<State> path;
 	
 	/**
 	 * @param x
@@ -15,11 +19,11 @@ public class State extends Node{
 	 * @param heuristic
 	 * @param isGoal
 	 */
-	public State(double x, double y, Street street, double distance, State previous) {
+	public State(double x, double y, Street street, double distance, ArrayList<State> path) {
 		super(x, y, street);
 		this.distance = distance;
 		this.heuristic = computeHeuristic();
-		this.previous = previous;
+		this.path = path;
 	}
 
 	/**
@@ -53,15 +57,15 @@ public class State extends Node{
 	/**
 	 * @return the previous
 	 */
-	public State getPrevious() {
-		return previous;
+	public ArrayList<State> getPath() {
+		return path;
 	}
 
 	/**
 	 * @param previous the previous to set
 	 */
-	public void setPrevious(State previous) {
-		this.previous = previous;
+	public void setPath(ArrayList<State> path) {
+		this.path = path;
 	}
 
 	@Override
@@ -76,6 +80,16 @@ public class State extends Node{
 	public double computeHeuristic() {
 		return haversine(getY(), getX(), TaxiBeat.client.getY(), TaxiBeat.client.getX());
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(distance, heuristic);
+	}
+
+
 	
 	
 }

@@ -25,8 +25,7 @@ public class TaxiBeat {
 	/**
 	 * The queue that keeps the states that have not yet extended.
 	 */
-	//public static TreeSet<State> searchQueue;
-	public static PriorityQueue<State> searchQueue;
+	public static TreeSet<State> searchQueue;
 	/**
 	 * A set that keeps all the states that have been extended.
 	 */
@@ -157,6 +156,11 @@ public class TaxiBeat {
 		State startState, targetState, taxiState;
 		double initialDistance;
 		boolean found;
+		ArrayList<State> pathTaxi;
+		Iterator<State> iterator;
+		boolean add;
+		double childDistance;
+		ArrayList<State> remove = new ArrayList<State>();
 		for(i = 0; i < Taxi.taxis.size(); i++) {	
 			/**
 			 * Create initial state for our algorithm.
@@ -164,16 +168,16 @@ public class TaxiBeat {
 			currentTaxi = Taxi.taxis.get(i);
 			initialDistance = Point.haversine(currentTaxi.getClosestNode().getY(), currentTaxi.getClosestNode().getX(), currentTaxi.getY(), currentTaxi.getX());
 			taxiState = new State(currentTaxi.getX(), currentTaxi.getY(), currentTaxi.getClosestNode().getStreet(), 0, null);
-			startState = new State(currentTaxi.getClosestNode().getX(), currentTaxi.getClosestNode().getY(), currentTaxi.getClosestNode().getStreet(), initialDistance, taxiState);
+			pathTaxi = new ArrayList<State>();
+			pathTaxi.add(taxiState);
+			startState = new State(currentTaxi.getClosestNode().getX(), currentTaxi.getClosestNode().getY(), currentTaxi.getClosestNode().getStreet(), initialDistance, pathTaxi);
 			/**
 			 * Define two data structures that will be used for A* algorithm.
 			 */
-			ArrayList<State> statesOfRoute = new ArrayList<State>();
 			/**
 			 * Add first state to the route.
 			 */
-			//searchQueue = new TreeSet<State>(new StateComparator());
-			searchQueue = new PriorityQueue<State>(new StateComparator());
+			searchQueue = new TreeSet<State>(new StateComparator());
 			closedSet = new ArrayList<Node>();
 			/**
 			 * The closest node to the current taxi is the root of the graph.
@@ -181,45 +185,75 @@ public class TaxiBeat {
 			searchQueue.add(startState);
 			found = false;
 			while(!searchQueue.isEmpty() && !found) {
-				//System.out.println(searchQueue);
-				if (searchQueue.peek().getX() == clientNode.getX() && searchQueue.peek().getY() == clientNode.getY()) {
+				
+			if (searchQueue.first().getX() == clientNode.getX() && searchQueue.first().getY() == clientNode.getY()) {
 					/**
 					 * We reached the node of the client so break.
 					 */
+					System.out.println("found" + searchQueue.first());
 					found = true;
 					break;
 				}
-				targetState = searchQueue.poll();
+				targetState = searchQueue.pollFirst();
 				targetNode = new Node(targetState.getX(), targetState.getY(), targetState.getStreet());
 				targetPoint = new Point(targetState.getX(), targetState.getY());
 				if (closedSet.contains(targetNode)) {
 					continue;
 				}
-				Node tempNode;
+
 				for (Node child : map.get(targetPoint)) {
-					boolean exists = false;
-					for( int j = 0; j < closedSet.size(); j++ ) {
-						tempNode = closedSet.get(j);
-						if (tempNode.equals(child)) {
-							exists = true;
-							break;
+					if(!closedSet.contains(child)) {
+						add = true;
+						remove.clear();
+						childDistance = Point.haversine(targetState.getY(), targetState.getX(), child.getY(), child.getX());
+						ArrayList<State> path = new ArrayList<State>();
+						path.addAll(targetState.getPath());
+						path.add(targetState);
+						iterator = searchQueue.iterator();
+						while (iterator.hasNext()) {
+							State curr = null;
+							curr = iterator.next();
+							if (curr.getX() == child.getX() && curr.getY() == child.getY()) {
+								if (curr.getDistance() > Point.round(targetState.getDistance() + childDistance, 3)) {
+									remove.add(curr);
+								}
+								if (curr.getDistance() < Point.round(targetState.getDistance() + childDistance, 3)) {
+									add = false;
+								}
+							
+							}
 						}
-					}
-					if (!exists) {
-						double childDistance = Point.haversine(targetState.getY(), targetState.getX(), child.getY(), child.getX());
-						searchQueue.add(new State(child.getX(), child.getY(), child.getStreet(), Point.round(targetState.getDistance() + childDistance, 3), targetState));
-					}
-					else {
+						if (add) {
+							searchQueue.removeAll(remove);
+							searchQueue.add(new State(child.getX(), child.getY(), child.getStreet(), Point.round(targetState.getDistance() + childDistance, 3), path));
+						}
 						
 					}
+				
 				}
-				closedSet.add(targetNode); 
+				
+				
+				//System.out.println(searchQueue);
+				iterator = searchQueue.iterator();
+				boolean exists = false;
+				ArrayList<State> prev = new ArrayList<State>();
+				while (iterator.hasNext()) {
+					State curr = iterator.next();
+					//System.out.println("AASS" + curr);
+					if (curr.getX() == targetState.getX() && curr.getY() == targetState.getY()) {
+						//System.out.println("Alternative");
+						exists = true;
+					}
+				}
+				if (!exists) {
+					closedSet.add(targetNode); 
+				}
 
 			}
-
+			
 
 			System.out.println(searchQueue);
-			State finalState = searchQueue.poll();
+			State finalState = searchQueue.pollFirst();
 			if (found) {
 				System.out.println("For taxi " + i + " all went OK" + "\n");
 			}
@@ -229,16 +263,19 @@ public class TaxiBeat {
 			/**
 			 * Add taxi to the route.
 			 */
-			statesOfRoute.add(finalState);
-			State prevState = finalState.getPrevious();
-			while(prevState != null) {
-				statesOfRoute.add(prevState);
-				prevState = prevState.getPrevious();
+			Route.routes.add(new Route(finalState.getPath(), Point.round(finalState.getDistance() + clientDistance,3), currentTaxi));	
+			State alternativeState;
+			while(!searchQueue.isEmpty() && finalState.getDistance() + finalState.getHeuristic() == searchQueue.first().getDistance() + searchQueue.first().getHeuristic()) {
+				alternativeState = searchQueue.pollFirst();
+				if (alternativeState.getX() == finalState.getX() && alternativeState.getY() == finalState.getY()) {
+					System.out.println("AS);ternaive");
+					System.out.println(alternativeState.getPath());
+					Route.routes.add(new Route(alternativeState.getPath(), Point.round(alternativeState.getDistance() + clientDistance,3), currentTaxi));	
+				}
 			}
-			statesOfRoute.add(taxiState);
-			Route.routes.add(new Route(statesOfRoute, Point.round(finalState.getDistance() + clientDistance,3), currentTaxi));
-		}
 		
+		}
+
 		kmlWriter.addRoutes();
 		kmlWriter.closeFile();
 		for(Route route : Route.routes) {

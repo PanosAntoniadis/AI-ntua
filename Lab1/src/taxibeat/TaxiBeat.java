@@ -35,7 +35,7 @@ public class TaxiBeat {
 		/**
 		 * Define the path of the csv files to read and csv separator (comma).
 		 */
-		String nodesFile = "./node_test.csv";
+		String nodesFile = "./nodes.csv";
 		String taxisFile = "./taxis.csv";
 		String clientFile = "./client.csv";
 		String line = "";
@@ -140,7 +140,7 @@ public class TaxiBeat {
 			}
 		} 
 
-		KmlWriter kmlWriter = new KmlWriter("routes.kml");
+		KmlWriter kmlWriter = new KmlWriter("best-route.kml");
 		kmlWriter.initializeFile("taxi routes");
 		kmlWriter.defineStyle("green", "ff009900", 4);
 		kmlWriter.defineStyle("red", "ff0000ff", 4);
@@ -190,7 +190,6 @@ public class TaxiBeat {
 					/**
 					 * We reached the node of the client so break.
 					 */
-					System.out.println("found" + searchQueue.first());
 					found = true;
 					break;
 				}
@@ -232,16 +231,12 @@ public class TaxiBeat {
 				
 				}
 				
-				
-				//System.out.println(searchQueue);
 				iterator = searchQueue.iterator();
 				boolean exists = false;
 				ArrayList<State> prev = new ArrayList<State>();
 				while (iterator.hasNext()) {
 					State curr = iterator.next();
-					//System.out.println("AASS" + curr);
 					if (curr.getX() == targetState.getX() && curr.getY() == targetState.getY()) {
-						//System.out.println("Alternative");
 						exists = true;
 					}
 				}
@@ -252,7 +247,6 @@ public class TaxiBeat {
 			}
 			
 
-			System.out.println(searchQueue);
 			State finalState = searchQueue.pollFirst();
 			if (found) {
 				System.out.println("For taxi " + i + " all went OK" + "\n");
@@ -268,14 +262,15 @@ public class TaxiBeat {
 			while(!searchQueue.isEmpty() && finalState.getDistance() + finalState.getHeuristic() == searchQueue.first().getDistance() + searchQueue.first().getHeuristic()) {
 				alternativeState = searchQueue.pollFirst();
 				if (alternativeState.getX() == finalState.getX() && alternativeState.getY() == finalState.getY()) {
-					System.out.println("AS);ternaive");
-					System.out.println(alternativeState.getPath());
 					Route.routes.add(new Route(alternativeState.getPath(), Point.round(alternativeState.getDistance() + clientDistance,3), currentTaxi));	
 				}
 			}
 		
 		}
-
+		/**
+		 * Uncomment it if you want just the best path.
+		 */
+		//kmlWriter.addBest();
 		kmlWriter.addRoutes();
 		kmlWriter.closeFile();
 		for(Route route : Route.routes) {

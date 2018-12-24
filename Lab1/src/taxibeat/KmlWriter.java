@@ -32,16 +32,39 @@ public class KmlWriter {
 		writer.close();
     }
     
+    void addBest() throws IOException {
+    	double minCost = Route.routes.first().getCost();
+    	for (Route route : Route.routes) {
+    		if (route.getCost() != minCost) {
+    			return;
+    		}
+    		writer.write("<Placemark>\n" +"<name>Best Taxi </name>\n" + " <styleUrl>#green</styleUrl>\n" + "<LineString>\n" +
+				"<altitudeMode>relative</altitudeMode>\n" + "<coordinates>\n"); 
+    		for(State state : route.getRoute()) {
+    			writer.write(state.getX() + "," + state.getY() + ",0\n");
+    		}
+    		writer.write("</coordinates>\n" + "</LineString>\n" + "</Placemark>\n");
+    		}
+    	}
+    
     void addRoutes() throws IOException {
     	int cnt = 1;
+    	Taxi firstTaxi = Route.routes.first().getTaxi();
     	for (Route route : Route.routes) {
     		if (cnt == 1) {
-    			writer.write("<Placemark>\n" +"<name>Taxi " + cnt + "</name>\n" + " <styleUrl>#green</styleUrl>\n" + "<LineString>\n" +
+    			writer.write("<Placemark>\n" +"<name>Taxi 1 </name>\n" + " <styleUrl>#green</styleUrl>\n" + "<LineString>\n" +
     					"<altitudeMode>relative</altitudeMode>\n" + "<coordinates>\n"); 
     		}
     		else {
+    			if(firstTaxi.equals(route.getTaxi())) {
+    				writer.write("<Placemark>\n" +"<name>Taxi 1 </name>\n" + " <styleUrl>#green</styleUrl>\n" + "<LineString>\n" +
+    						"<altitudeMode>relative</altitudeMode>\n" + "<coordinates>\n");
+    				cnt = cnt -1;
+    			}
+    			else {
     		writer.write("<Placemark>\n" +"<name>Taxi " + cnt + "</name>\n" + " <styleUrl>#red</styleUrl>\n" + "<LineString>\n" +
 					"<altitudeMode>relative</altitudeMode>\n" + "<coordinates>\n");
+    			}
     		}
     		for(State state : route.getRoute()) {
     			writer.write(state.getX() + "," + state.getY() + ",0\n");

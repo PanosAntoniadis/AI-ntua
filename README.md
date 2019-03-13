@@ -21,3 +21,13 @@ route that corresponds to this taxi.
   where X is the longitude, Y is the latitude and id the id of the taxi.</p>
 
 - __nodes.csv:__ This file contains the coordinates of some parts of the streets. Each street is identified by an id and, therefore, parts with the same id exist in the same street.
+
+- __TN2018-T1.pdf:__ The description of the problem in Greek.
+
+- __myclient.csv, mytaxis.csv:__ Different coordinates for the client and the taxis. You can test it with your own too.
+
+- __uml.png:__ A class diagram of the Java project.
+
+- __routes.kml , myroutes.kml:__ The best route for each taxi in kml form.
+
+- __best-route.kml:__ The best route to the closest taxi (given the initital coordinates).
